@@ -80,7 +80,4 @@
 			<class name="com.qa.opencart.tests.OrderHistoryPageTest" />
 		</classes>
 	</test>
-
-
-
 </suite> 
