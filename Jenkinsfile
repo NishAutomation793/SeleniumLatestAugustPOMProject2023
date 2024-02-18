@@ -38,7 +38,7 @@ pipeline
         stage('Regression Automation Tests') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    git 'https://github.com/SeleniumLatestAugustPOMProject2023.git'
+                    git 'https://github.com/NishAutomation793/SeleniumLatestAugustPOMProject2023.git'
                     bat "mvn clean test -Dsurefire.suiteXmlFiles=src/test/resource/testrunners/testng_regression.xml"
                     
                 }
@@ -82,7 +82,7 @@ pipeline
         stage('Sanity Automation Test') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    git 'https://github.com/SeleniumLatestAugustPOMProject2023.git'
+                    git 'https://github.com/NishAutomation793/SeleniumLatestAugustPOMProject2023.git'
                     bat "mvn clean test -Dsurefire.suiteXmlFiles=src/test/resource/testrunners/testng_sanity.xml"
                     
                 }
