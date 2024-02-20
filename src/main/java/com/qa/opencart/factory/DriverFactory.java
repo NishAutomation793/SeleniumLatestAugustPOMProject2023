@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Properties;
 
 import org.openqa.selenium.OutputType;
@@ -13,6 +15,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.io.FileHandler;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.qa.opencart.exception.FrameworkException;
 
@@ -28,7 +31,7 @@ public class DriverFactory {
 
 	public WebDriver intDriver(Properties pr) {
 
-		String browserName = pr.getProperty("browser"); //This is fetching value of browser from Properties file.
+		String browserName = pr.getProperty("browser"); // This is fetching value of browser from Properties file.
 //String browserName = System.getProperty("browser");	 --> If I want to fetch the browser value from maven command	
 
 		optionManager = new OptionsManager(pr);
@@ -36,20 +39,61 @@ public class DriverFactory {
 		switch (browserName.toLowerCase().trim()) {
 		case "chrome":
 
-			// driver = new ChromeDriver(optionManager.getChromeOptions());
-			tlDriver.set(new ChromeDriver(optionManager.getChromeOptions()));
+			if (Boolean.parseBoolean(pr.getProperty("remote")))
+
+			{
+				// If we have remote as true inside properties file then our test cases will run
+				// on selenium grid
+
+				initRemoteDriver(browserName);
+
+			} 
+			else {
+				// running the cases on local system
+				// driver = new ChromeDriver(optionManager.getChromeOptions());
+				tlDriver.set(new ChromeDriver(optionManager.getChromeOptions()));
+			}
 			break;
+
 		case "firefox":
-			// driver = new FirefoxDriver(optionManager.getFirefoxOptions());
-	
-			tlDriver.set(new FirefoxDriver(optionManager.getFirefoxOptions()));
+
+			if (Boolean.parseBoolean(pr.getProperty("remote")))
+
+			{
+				// If we have remote as true inside properties file then our test cases will run
+				// on selenium grid
+
+				initRemoteDriver(browserName);
+
+			} else
+
+			{
+				// driver = new FirefoxDriver(optionManager.getFirefoxOptions());
+
+				tlDriver.set(new FirefoxDriver(optionManager.getFirefoxOptions()));
+			}
 			break;
+
 		case "edge":
-			//driver = new EdgeDriver();
-			
-			tlDriver.set(new EdgeDriver());
-			break;
-		default:
+
+			if (Boolean.parseBoolean(pr.getProperty("remote")))
+
+			{
+				// If we have remote as true inside properties file then our test cases will run
+				// on selenium grid
+
+				initRemoteDriver(browserName);
+
+			} else
+
+				// driver = new EdgeDriver();
+
+			{
+				tlDriver.set(new EdgeDriver(optionManager.getEdgeOptions()));
+			}
+				break;
+		
+		 default:
 			System.out.println("Please enter correct browser");
 			throw new FrameworkException("NO Browser Found...");
 
@@ -58,16 +102,16 @@ public class DriverFactory {
 		getthreadLocalDriver().manage().window().maximize();
 		getthreadLocalDriver().manage().deleteAllCookies();
 		getthreadLocalDriver().get(pr.getProperty("url"));
-		
+
 		return getthreadLocalDriver();
 	}
 
 	public static WebDriver getthreadLocalDriver() {
-		
-		return tlDriver.get();	
-		
+
+		return tlDriver.get();
+
 	}
-	
+
 	public Properties initProp() {
 		pr = new Properties();
 		FileInputStream fp = null;
@@ -131,26 +175,71 @@ public class DriverFactory {
 		}
 		return pr;
 	}
-	
+
 	/**
-	 * Take Screenshot Method	
+	 * Take Screenshot Method
+	 * 
 	 * @param methodName
 	 * @return
 	 */
-		public static String getScreenshot(String methodName) {
-		
-			File src =((TakesScreenshot)getthreadLocalDriver()).getScreenshotAs(OutputType.FILE);
-			String path = System.getProperty("user.dir") + "/screenshot/" + methodName + "_" + System.currentTimeMillis()
-			+ ".png";
-			
-			File destination =new File(path);
-			
-			try {
-				FileHandler.copy(src, destination);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
-			return path;
+	public static String getScreenshot(String methodName) {
+
+		File src = ((TakesScreenshot) getthreadLocalDriver()).getScreenshotAs(OutputType.FILE);
+		String path = System.getProperty("user.dir") + "/screenshot/" + methodName + "_" + System.currentTimeMillis()
+				+ ".png";
+
+		File destination = new File(path);
+
+		try {
+			FileHandler.copy(src, destination);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+
+		return path;
+	}
+
+	/**
+	 * Running the test cases on Selenium Grid - Remote WebDriver
+	 * 
+	 * @param browserName
+	 */
+	private void initRemoteDriver(String browserName) {
+
+		try {
+			System.out.println("Running test cases on Selenium GRID with browser: " + browserName);
+
+			switch (browserName.trim().toLowerCase()) {
+			case "chrome":
+
+
+				tlDriver.set(new RemoteWebDriver(new URL(pr.getProperty("hubUrl")), optionManager.getChromeOptions()));
+
+				 break;
+				 
+			case "firefox":
+				
+				tlDriver.set(
+						new RemoteWebDriver(new URL(pr.getProperty("hubUrl")), optionManager.getFirefoxOptions()));
+
+				break;
+				
+			case "edge":
+
+				tlDriver.set(new RemoteWebDriver(new URL(pr.getProperty("hubUrl")), optionManager.getEdgeOptions()));
+
+				break;
+
+			default:
+
+				System.out.println("Wrong browser Name...Can't run test cases on Selenium Grid");
+				break;
+			}
+
+		}
+
+		catch (MalformedURLException e) {
+
+		}
+	}
 }
