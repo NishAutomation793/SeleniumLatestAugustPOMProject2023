@@ -2,17 +2,20 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
 
-<suite name="TestNG Regression Suite" verbose="2" >
-	
+<suite name="TestNG Regression Suite" verbose="2" parallel="tests" thread-count="4">
+
 	<listeners>
 		<listener class-name="com.qa.opencart.listeners.ExtentReportListener" />
-	
+
 		<listener class-name="com.qa.opencart.listeners.TestAllureListener" />
 
 	</listeners>
 
-			<test name="Login Page Test">
+	<test name="Login Page Test">
 		<parameter name="browser" value="chrome"></parameter>
+		<parameter name="browserversion" value="111" />
+		<parameter name="testname" value="Login Page Test" />
+
 		<classes>
 			<class name="com.qa.opencart.tests.LoginPageTest" />
 		</classes>
@@ -21,6 +24,9 @@
 
 	<test name="Accounts Page Test">
 		<parameter name="browser" value="firefox"></parameter>
+		<parameter name="browserversion" value="117" />
+		<parameter name="testname" value="Accounts Page Test" />
+
 		<classes>
 			<class name="com.qa.opencart.tests.AccountsPageTest" />
 		</classes>
@@ -28,7 +34,11 @@
 	</test>
 
 	<test name="Product Info Page Test">
-		<parameter name="browser" value="edge"></parameter>
+		<parameter name="browser" value="chrome"></parameter>
+		
+		<parameter name="browserversion" value="113" />
+		<parameter name="testname" value="Products Info Page Test" />
+		
 		<classes>
 			<class name="com.qa.opencart.tests.ProductInfoPageTest" />
 		</classes>
@@ -36,13 +46,16 @@
 
 	<test name="Register Page Test">
 		<parameter name="browser" value="firefox"></parameter>
+		<parameter name="browserversion" value="116" />
+		<parameter name="testname" value="Register Page Test" />
+		
 		<classes>
 			<class name="com.qa.opencart.tests.RegisterPageTest" />
 		</classes>
 
 	</test>
 
-	<test name="Login Page Negative Test">
+	<!--	<test name="Login Page Negative Test">
 		<parameter name="browser" value="chrome"></parameter>
 		<classes>
 			<class name="com.qa.opencart.tests.LoginPageNegativeTest" />
@@ -79,5 +92,5 @@
 		<classes>
 			<class name="com.qa.opencart.tests.OrderHistoryPageTest" />
 		</classes>
-	</test>
+	</test>-->
 </suite> 

@@ -1,5 +1,7 @@
 package com.qa.opencart.factory;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -37,12 +39,21 @@ public class OptionsManager {
 
 		}
 
-		if(Boolean.parseBoolean(pr.getProperty("remote")))
-		{
-			//for running test cases on selenium GRID
+		if (Boolean.parseBoolean(pr.getProperty("remote"))) {
+			// Setting capabilities for running test cases on selenium GRID
 			co.setCapability("browserName", "chrome");
+
+			// Setting capabilities for running test cases on SELENOID GRID
+			co.setBrowserVersion(pr.getProperty("browserversion").trim());//setting the browserversion after fetching it from prop files
+
+			Map<String, Object> selenoidOptions = new HashMap<>();
+			selenoidOptions.put("screenResolution", "1280x1024x24");
+			selenoidOptions.put("enableVNC", true);
+			selenoidOptions.put("name", pr.getProperty("testname"));
+			co.setCapability("selenoid:options", selenoidOptions);
+			
 		}
-		
+
 		return co;
 	}
 
@@ -60,10 +71,21 @@ public class OptionsManager {
 			fo.addArguments("--incognito");
 
 		}
-		if(Boolean.parseBoolean(pr.getProperty("remote")))
-		{
-			//for running test cases on selenium GRID
+		if (Boolean.parseBoolean(pr.getProperty("remote"))) {
+			// for running test cases on selenium GRID
 			fo.setCapability("browserName", "firefox");
+			
+			
+			// Setting capabilities for running test cases on SELENOID GRID
+			fo.setBrowserVersion(pr.getProperty("browserversion").trim());//setting the browserversion after fetching it from prop files
+
+			Map<String, Object> selenoidOptions = new HashMap<>();
+			selenoidOptions.put("screenResolution", "1280x1024x24");
+			selenoidOptions.put("enableVNC", true);
+			selenoidOptions.put("name", pr.getProperty("testname"));
+			fo.setCapability("selenoid:options", selenoidOptions);
+				
+			
 		}
 
 		return fo;
@@ -83,7 +105,7 @@ public class OptionsManager {
 			eo.addArguments("--inPrivate");
 
 		}
-		
+
 //		if(Boolean.parseBoolean(pr.getProperty("remote")))
 //		{
 //			//for running test cases on selenium GRID

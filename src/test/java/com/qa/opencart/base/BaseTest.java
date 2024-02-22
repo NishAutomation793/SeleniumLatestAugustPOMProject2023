@@ -20,6 +20,8 @@ import com.qa.opencart.pages.RegisterPage;
 import com.qa.opencart.pages.SearchResultsPage;
 import com.qa.opencart.pages.ShoppingCartPage;
 
+import io.qameta.allure.Description;
+
 /**
  * All the Main Page references should be maintained in the Base Test Class only
  * Try to keep all driver factor, WebDriver references here itself.
@@ -48,9 +50,10 @@ public class BaseTest {
 	protected OrderHistoryPage orderHisPage;
 
 	
-	@Parameters("browser")
+	@Description("This browserversion and testname is coming from testng.xml file as a parameter for running the tests on selenoid grid")
+	@Parameters({"browser", "browserversion", "testname"})
 	@BeforeTest
-	public void setUp(@Optional ("chrome") String browserNamefromXml) {
+	public void setUp(@Optional ("chrome") String browserNamefromXml, String browserVersion, String testName) {
 //Here above Optional annotation is used when we are 
 //not having any parameters for test case from textNG.xml and this method is expecting some parameter
 		df = new DriverFactory();
@@ -59,6 +62,9 @@ public class BaseTest {
 		if(browserNamefromXml!=null)
 		{
 			pr.setProperty("browser", browserNamefromXml);
+			pr.setProperty("browserversion", browserVersion);//config file parameters name will be replaced by this browserversion and testname
+			pr.setProperty("testname", testName);
+			
 			
 		}
 //This above logic we have written if we get some browser parameter 
