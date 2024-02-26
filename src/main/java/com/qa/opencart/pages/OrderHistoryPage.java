@@ -2,6 +2,8 @@ package com.qa.opencart.pages;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -22,6 +24,9 @@ public class OrderHistoryPage {
 	private By orderHistoryTableList = By.xpath("//table[@class='table table-bordered table-hover']//tbody/tr");
 
 	private By nextArrowKey = By.xpath("//ul[@class='pagination']/li/a");
+	
+	private static final Logger log=LogManager.getLogger(OrderHistoryPage.class);
+
 
 	public OrderHistoryPage(WebDriver driver) {
 
@@ -38,8 +43,9 @@ public class OrderHistoryPage {
 		String orderHistoryUrl = ut.waitforURLContains(AppConstants.ORDER_HISTORY_URL_FRACTION,
 				AppConstants.SHORT_DEFAULT_WAIT);
 
-		System.out.println("Order History url is: " + orderHistoryUrl);
+		//System.out.println("Order History url is: " + orderHistoryUrl);
 
+		log.info("Order History url is: " + orderHistoryUrl);
 		return orderHistoryUrl;
 
 	}
@@ -48,8 +54,9 @@ public class OrderHistoryPage {
 		List<WebElement> orderTableHeaders = ut.getListWebElements(orderHisTableHeaders);
 
 		for (WebElement el : orderTableHeaders) {
-			System.out.println(el.getText());
+			//System.out.println(el.getText());
 
+			log.info(el.getText());
 		}
 
 		List<WebElement> orderHistoryList = ut.getListWebElements(orderHistoryTableList);
@@ -58,7 +65,9 @@ public class OrderHistoryPage {
 
 		for (WebElement el : orderHistoryList) {
 			String text = el.getText();
-			System.out.println(text);
+			//System.out.println(text);
+			
+			log.info(text);
 		}
 		return true;
 	}

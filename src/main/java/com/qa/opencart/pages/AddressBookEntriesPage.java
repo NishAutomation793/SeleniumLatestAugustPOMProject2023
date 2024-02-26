@@ -2,6 +2,8 @@ package com.qa.opencart.pages;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -43,6 +45,9 @@ public class AddressBookEntriesPage {
 
 	private By NewAddressText = By.xpath("//div[@class='table-responsive']//tr/td[@class='text-left']");
 
+	private static final Logger log=LogManager.getLogger(AddressBookEntriesPage.class);
+
+	
 	public AddressBookEntriesPage(WebDriver driver) {
 
 		this.driver = driver;
@@ -108,7 +113,9 @@ public class AddressBookEntriesPage {
 			if (!message.equalsIgnoreCase("Your address has been successfully deleted")) {
 				break;
 			} else {
-				System.out.println("The Address has been deleted successfully");
+				//System.out.println("The Address has been deleted successfully");
+		log.info("The Address has been deleted successfully");
+			
 			}
 
 			driver.navigate().refresh();
@@ -119,17 +126,22 @@ public class AddressBookEntriesPage {
 
 	public boolean checkAllNewAddedAddreses() {
 		List<WebElement> allAddressText = ut.getListWebElements(NewAddressText);
-		System.out.println("Total size is: " + allAddressText.size());
+		//System.out.println("Total size is: " + allAddressText.size());
 
+		log.info("Total size is: " + allAddressText.size());
+		
 		for (WebElement el : allAddressText) {
 			String text = el.getText();
 			if (!text.isEmpty()) {
-				System.out.println("Complete Address is: " + text);
+				//System.out.println("Complete Address is: " + text);
 
+				log.info("Complete Address is: " + text);
 			}
 
 			else {
 				System.out.println("No Address is Present...");
+				
+				log.info("No Address is Present...");
 				return false;
 			}
 		}

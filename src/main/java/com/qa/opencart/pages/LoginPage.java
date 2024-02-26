@@ -2,6 +2,8 @@ package com.qa.opencart.pages;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -43,7 +45,8 @@ public class LoginPage {
 
 	private By warningAlertsMessage = By.xpath("//div[@class='alert alert-danger alert-dismissible']");
 
-	
+	private static final Logger log=LogManager.getLogger(LoginPage.class);
+
 	
 	// Page Constructor:
 	public LoginPage(WebDriver driver) {
@@ -63,7 +66,9 @@ public class LoginPage {
 	public String getLoginPageTitle() {
 
 		String title = ut.waitTillTitleVisible(AppConstants.LOGIN_PAGE_TITLE, AppConstants.SHORT_DEFAULT_WAIT);
-		System.out.println("The Title of the Page is :" + title);
+		//System.out.println("The Title of the Page is :" + title);
+		
+		log.info("The Title of the Page is :" + title);
 		return title;
 	}
 
@@ -72,7 +77,9 @@ public class LoginPage {
 		String currentURL = ut.waitforURLContains(AppConstants.LOGIN_PAGE_URL_FRACTION,
 				AppConstants.SHORT_DEFAULT_WAIT);
 
-		System.out.println("The URL of the Page is :" + currentURL);
+		//System.out.println("The URL of the Page is :" + currentURL);
+		
+		log.info("The URL of the Page is :" + currentURL);
 		return currentURL;
 	}
 
@@ -105,8 +112,9 @@ public class LoginPage {
 		ut.doClickWithWait(loginBtn, AppConstants.SHORT_DEFAULT_WAIT);
 		
 		String message=ut.doElementGetText(warningAlertsMessage);
-		System.out.println("Warning Message is: "+message);
+		//System.out.println("Warning Message is: "+message);
 		
+		log.info("Warning Message is: "+message);
 		return message;
 
 	}
@@ -116,8 +124,9 @@ public class LoginPage {
 
 			String placeHolder = ut.getElementAttribute(searchBox, "placeholder");
 
-			System.out.println("Placeholder for Search Box is: " + placeHolder);
+			//System.out.println("Placeholder for Search Box is: " + placeHolder);
 
+			log.info("Placeholder for Search Box is: " + placeHolder);
 			return placeHolder;
 		}
 
@@ -128,8 +137,9 @@ public class LoginPage {
 
 		List<String> footerLinksText = ut.getElementsTextList(footerLinks);
 
-		System.out.println("Footer Links are: " + footerLinksText);
+		//System.out.println("Footer Links are: " + footerLinksText);
 
+		log.info("Footer Links are: " + footerLinksText);
 		return footerLinksText;
 	}
 

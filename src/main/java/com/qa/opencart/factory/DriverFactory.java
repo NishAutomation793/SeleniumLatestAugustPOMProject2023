@@ -8,6 +8,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -28,6 +30,8 @@ public class DriverFactory {
 
 //This is thread local driver which is used if multiple thread attack the single test case then every thread will get its thread local driver	
 	public static ThreadLocal<WebDriver> tlDriver = new ThreadLocal<WebDriver>();
+	
+	private static final Logger log=LogManager.getLogger(DriverFactory.class);
 
 	public WebDriver intDriver(Properties pr) {
 
@@ -45,12 +49,15 @@ public class DriverFactory {
 				// If we have remote as true inside properties file then our test cases will run
 				// on selenium grid
 
+				log.info("Remote value is : "+pr.getProperty("remote"));
 				initRemoteDriver(browserName);
 
 			} 
 			else {
 				// running the cases on local system
 				// driver = new ChromeDriver(optionManager.getChromeOptions());
+				log.info("Remote value is : "+pr.getProperty("remote"));
+
 				tlDriver.set(new ChromeDriver(optionManager.getChromeOptions()));
 			}
 			break;
@@ -62,6 +69,8 @@ public class DriverFactory {
 			{
 				// If we have remote as true inside properties file then our test cases will run
 				// on selenium grid
+				log.info("Remote value is : "+pr.getProperty("remote"));
+
 
 				initRemoteDriver(browserName);
 
@@ -69,7 +78,10 @@ public class DriverFactory {
 
 			{
 				// driver = new FirefoxDriver(optionManager.getFirefoxOptions());
-
+				
+				log.info("Remote value is : "+pr.getProperty("remote"));
+				
+				
 				tlDriver.set(new FirefoxDriver(optionManager.getFirefoxOptions()));
 			}
 			break;
@@ -82,6 +94,8 @@ public class DriverFactory {
 				// If we have remote as true inside properties file then our test cases will run
 				// on selenium grid
 
+				log.info("Remote value is : "+pr.getProperty("remote"));
+
 				initRemoteDriver(browserName);
 
 			} else
@@ -89,12 +103,16 @@ public class DriverFactory {
 				// driver = new EdgeDriver();
 
 			{
+				log.info("Remote value is : "+pr.getProperty("remote"));
+
 				tlDriver.set(new EdgeDriver(optionManager.getEdgeOptions()));
 			}
 				break;
 		
 		 default:
-			System.out.println("Please enter correct browser");
+			//System.out.println("Please enter correct browser");
+			 
+			 log.error("Please enter correct browser");
 			throw new FrameworkException("NO Browser Found...");
 
 		}
@@ -126,7 +144,8 @@ public class DriverFactory {
 		try {
 			if (envName == null) {
 
-				System.out.println("No Environment Entered..Running cases on defalut env");
+				//System.out.println("No Environment Entered..Running cases on defalut env");
+				log.warn("No Environment Entered..Running cases on defalut env");
 				fp = new FileInputStream("./src/test/resource/config/config.properties");
 
 			}
@@ -135,29 +154,37 @@ public class DriverFactory {
 				switch (envName.toLowerCase().trim()) {
 				case "qa":
 
-					System.out.println("Environment Entered is: " + envName);
+					//System.out.println("Environment Entered is: " + envName);
 
+					log.info("Environment Entered is: " + envName);
 					fp = new FileInputStream("./src/test/resource/config/config.qa.properties");
 					break;
 				case "dev":
-					System.out.println("Environment Entered is: " + envName);
+					//System.out.println("Environment Entered is: " + envName);
+
+					log.info("Environment Entered is: " + envName);
 
 					fp = new FileInputStream("./src/test/resource/config/config.dev.properties");
 					break;
 				case "uat":
-					System.out.println("Environment Entered is: " + envName);
+					//System.out.println("Environment Entered is: " + envName);
+
+					log.info("Environment Entered is: " + envName);
 
 					fp = new FileInputStream("./src/test/resource/config/config.uat.properties");
 					break;
 				case "stage":
-					System.out.println("Environment Entered is: " + envName);
+					//System.out.println("Environment Entered is: " + envName);
+
+					log.info("Environment Entered is: " + envName);
 
 					fp = new FileInputStream("./src/test/resource/config/config.stage.properties");
 					break;
 
 				default:
-					System.out.println("Please enter correct env Name");
+					//System.out.println("Please enter correct env Name");
 
+					log.warn("Please enter correct env Name");
 					throw new FrameworkException("WRONG ENVIRONMENT.." + envName);
 
 				}
@@ -207,8 +234,9 @@ public class DriverFactory {
 	private void initRemoteDriver(String browserName) {
 
 		try {
-			System.out.println("Running test cases on Selenium GRID with browser: " + browserName);
+			//System.out.println("Running test cases on Selenium GRID with browser: " + browserName);
 
+			log.info("Running test cases on Selenium GRID with browser: " + browserName);
 			switch (browserName.trim().toLowerCase()) {
 			case "chrome":
 
@@ -232,7 +260,9 @@ public class DriverFactory {
 
 			default:
 
-				System.out.println("Wrong browser Name...Can't run test cases on Selenium Grid");
+				//System.out.println("Wrong browser Name...Can't run test cases on Selenium Grid");
+				log.error("Wrong browser Name...Can't run test cases on Selenium Grid");
+				
 				break;
 			}
 

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -39,11 +41,15 @@ public class ProductInfoPage {
 	
 	private Map<String, String> productInfoMap = new HashMap<String, String>();
 
+	private static final Logger log=LogManager.getLogger(ProductInfoPage.class);
+
+	
 	public String checkProductName() {
 
 		String productText = ut.doElementGetText(productName);
-		System.out.println("Product Name is: " + productText);
+		//System.out.println("Product Name is: " + productText);
 
+		log.info("Product Name is: " + productText);
 		return productText;
 
 	}
@@ -83,8 +89,9 @@ public class ProductInfoPage {
 		productInfoMap.put("Product Name", checkProductName());
 		getProductMetaDataInfo();
 		getProductPricing();
-		System.out.println("All the Product Details are: " + productInfoMap);
+		//System.out.println("All the Product Details are: " + productInfoMap);
 
+		log.info("All the Product Details are: " + productInfoMap);
 		return productInfoMap;
 
 	}
@@ -98,8 +105,9 @@ public class ProductInfoPage {
 		
 		String addCartSuccessMessage=ut.doElementGetText(addingCartSuccessMessage);
 		
-		System.out.println("Adding Cart Message is: "+addCartSuccessMessage);
+		//System.out.println("Adding Cart Message is: "+addCartSuccessMessage);
 		
+		log.info("Adding Cart Message is: "+addCartSuccessMessage);
 		return addCartSuccessMessage ;
 		
 	}

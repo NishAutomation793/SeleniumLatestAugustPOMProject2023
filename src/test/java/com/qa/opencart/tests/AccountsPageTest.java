@@ -1,6 +1,9 @@
 package com.qa.opencart.tests;
 
 import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -8,8 +11,11 @@ import org.testng.annotations.Test;
 import com.qa.opencart.base.BaseTest;
 import com.qa.opencart.constants.AppConstants;
 import com.qa.opencart.pages.AccountsPage;
+import com.qa.opencart.pages.ShoppingCartPage;
 
 public class AccountsPageTest extends BaseTest {
+
+	private static final Logger log=LogManager.getLogger(AccountsPageTest.class);
 
 	
 /**
@@ -52,15 +58,18 @@ public class AccountsPageTest extends BaseTest {
 	public void getAccountLinks() {
 
 		List<String> headersLinks = ap.getHeadersLinks();
-		System.out.println("Headers Links are: " + headersLinks);
+		//System.out.println("Headers Links are: " + headersLinks);
+		
+		log.info("Headers Links are: " + headersLinks);
 	}
 
 	@Test
 	public void getAccountHeaderText() {
 
 		List<String> headersText = ap.getHeadersText();
-		System.out.println("Headers Text are: " + headersText);
+		//System.out.println("Headers Text are: " + headersText);
 
+		log.info("Headers Text are: " + headersText);
 		Assert.assertEquals(headersText, AppConstants.ACCOUNTS_PAGE_HEADERS_LIST);
 	}
 
@@ -68,8 +77,10 @@ public class AccountsPageTest extends BaseTest {
 	public void getAccountHeaderLinkList() {
 
 		List<String> headersLinks = ap.getHeadersLinks();
-		System.out.println("Headers Text are: " + headersLinks);
+		//System.out.println("Headers Text are: " + headersLinks);
 
+		
+		log.info("Headers Text are: " + headersLinks);
 		Assert.assertTrue(headersLinks.contains("Tablets"));
 	}
 

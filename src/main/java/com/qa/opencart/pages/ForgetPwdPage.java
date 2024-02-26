@@ -1,5 +1,7 @@
 package com.qa.opencart.pages;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -22,6 +24,9 @@ public class ForgetPwdPage {
 	
 	private By successMsg=By.xpath("//div[@class='alert alert-success alert-dismissible']");
 	
+	private static final Logger log=LogManager.getLogger(ForgetPwdPage.class);
+
+	
 	public ForgetPwdPage(WebDriver driver) {
 
 		this.driver = driver;
@@ -33,8 +38,9 @@ public class ForgetPwdPage {
 		
 		
 		String headerText=ut.doElementGetText(forgetPwdHeader);
-		System.out.println("Header of Forget Pwd Page is: "+headerText);
+		//System.out.println("Header of Forget Pwd Page is: "+headerText);
 		
+		log.info("Header of Forget Pwd Page is: "+headerText);
 		return headerText;
 	}
 	
@@ -49,8 +55,9 @@ public class ForgetPwdPage {
 		ut.waitPresenceofElement(emailAdd, AppConstants.SHORT_DEFAULT_WAIT).sendKeys(emailAddre);
 		ut.doClick(continueBtn);
 		String successMessage=ut.doElementGetText(successMsg);
-		System.out.println("Success Message on Forget Pwd Page is: "+successMessage);
+		//System.out.println("Success Message on Forget Pwd Page is: "+successMessage);
 		
+		log.info("Success Message on Forget Pwd Page is: "+successMessage);
 		return successMessage;
 	}
 	

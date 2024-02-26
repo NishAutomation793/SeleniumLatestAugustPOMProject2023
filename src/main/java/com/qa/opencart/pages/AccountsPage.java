@@ -3,11 +3,14 @@ package com.qa.opencart.pages;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.qa.opencart.constants.AppConstants;
+import com.qa.opencart.factory.DriverFactory;
 import com.qa.opencart.utils.ElementUtil;
 
 public class AccountsPage {
@@ -15,6 +18,9 @@ public class AccountsPage {
 	private WebDriver driver;
 
 	private ElementUtil ut;
+	
+	private static final Logger log=LogManager.getLogger(AccountsPage.class);
+
 
 	public AccountsPage(WebDriver driver) {
 
@@ -77,7 +83,9 @@ public class AccountsPage {
 	public String getAccountPageTitle() {
 
 		String title = ut.waitTillTitleVisible(AppConstants.ACC_PAGE_TITLE, AppConstants.SHORT_DEFAULT_WAIT);
-		System.out.println("The Title of the Account Page is :" + title);
+		//System.out.println("The Title of the Account Page is :" + title);
+		
+		log.info("The Title of the Account Page is :" + title);
 		return title;
 	}
 
@@ -85,7 +93,9 @@ public class AccountsPage {
 
 		String currentURL = ut.waitforURLContains(AppConstants.ACC_PAGE_URL_FRACTION, AppConstants.SHORT_DEFAULT_WAIT);
 
-		System.out.println("The URL of the Account Page is :" + currentURL);
+		//System.out.println("The URL of the Account Page is :" + currentURL);
+		
+		log.info("The URL of the Account Page is :" + currentURL);
 		return currentURL;
 	}
 

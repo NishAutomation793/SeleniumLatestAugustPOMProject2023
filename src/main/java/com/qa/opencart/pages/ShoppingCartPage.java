@@ -1,5 +1,7 @@
 package com.qa.opencart.pages;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -44,6 +46,10 @@ public class ShoppingCartPage {
 
 	private By successOrderPlaced = By.xpath("//div[@id='content']/h1[text()='Your order has been placed!']");
 
+	
+	private static final Logger log=LogManager.getLogger(ShoppingCartPage.class);
+
+	
 	public String shopCartHeaderName() {
 		return ut.doElementGetText(headerText);
 
@@ -51,14 +57,17 @@ public class ShoppingCartPage {
 
 	public String clickCheckout() {
 		
-		System.out.println(ut.doElementGetText(headerText));
+		//System.out.println(ut.doElementGetText(headerText));
+		
+		log.info(ut.doElementGetText(headerText));
 		ut.waitPresenceofElement(coupanCode, AppConstants.SHORT_DEFAULT_WAIT).click();
 		ut.doClickWithWait(shippingTaxes, AppConstants.SHORT_DEFAULT_WAIT);
 		ut.doClickWithWait(giftCertificate, AppConstants.SHORT_DEFAULT_WAIT);
 		ut.doClickWithWait(checkOutBtn, AppConstants.SHORT_DEFAULT_WAIT);
 		
-		System.out.println("Checkout Header is: "+ut.doElementGetText(checkOutHeader));
+		//System.out.println("Checkout Header is: "+ut.doElementGetText(checkOutHeader));
 		
+		log.info("Checkout Header is: "+ut.doElementGetText(checkOutHeader));
 		return ut.waitPresenceofElement(checkOutHeader, AppConstants.SHORT_DEFAULT_WAIT).getText();
 
 	}
@@ -82,7 +91,10 @@ public class ShoppingCartPage {
 		
 		String successMessage=ut.doElementGetText(successOrderPlaced);
 		
-		System.out.println("Successful Order Placement Message is: "+successMessage);
+		//System.out.println("Successful Order Placement Message is: "+successMessage);
+		
+		log.info("Successful Order Placement Message is: "+successMessage);
+		
 		return successMessage;
 	}
 }

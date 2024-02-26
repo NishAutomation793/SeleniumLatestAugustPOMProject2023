@@ -1,5 +1,7 @@
 package com.qa.opencart.pages;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -37,6 +39,9 @@ public class RegisterPage {
 	private By logOutLink=By.linkText("Logout");
 	
 	private By registerLink = By.linkText("Register");
+	
+	private static final Logger log=LogManager.getLogger(RegisterPage.class);
+
 
 	public RegisterPage(WebDriver driver) {
 
@@ -65,8 +70,9 @@ public class RegisterPage {
 		String userSuccMessage = ut.waitPresenceofElement(userSuccessMessage, AppConstants.MEDIUM_DEFAULT_WAIT)
 				.getText();
 		
-		System.err.println("User Success Message is:  "+userSuccMessage);
+		//System.err.println("User Success Message is:  "+userSuccMessage);
 
+		log.info("User Success Message is:  "+userSuccMessage);
 		ut.doClickWithWait(logOutLink, AppConstants.SHORT_DEFAULT_WAIT);
 		ut.doClickWithWait(registerLink, AppConstants.SHORT_DEFAULT_WAIT);
 		
